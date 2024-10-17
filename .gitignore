@@ -1,0 +1,4 @@
+__pycache__/
+storage/*.png
+**/.idea/workspace.xml
+**/.idea/tasks.xml
