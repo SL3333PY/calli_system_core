@@ -28,6 +28,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+@app.get("/")
+def root():
+    return {"Hello": "World"}
+
+
 @app.post("/recognize", response_model=RecognizePostResponse)
 def recognize(body: RecognizePostRequest) -> RecognizePostResponse:
     try:
