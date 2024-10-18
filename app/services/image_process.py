@@ -23,7 +23,9 @@ def convert_base64_to_image(base64_code):
 
 def save_image(image):
     image = cv2.resize(image, (256, 256))
-    directory = r'D:\calli_system\calli_system_core\storage'
+    directory = r'../storage'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     os.chdir(directory)
     filename = uuid.uuid4().hex + ".png"
     cv2.imwrite(filename, image)
