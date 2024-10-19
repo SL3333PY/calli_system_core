@@ -21,7 +21,8 @@ def match_images(image1, image2):
 
 
 def process_image(image, target_size):
-
+    if image.shape[0] != image.shape[1]:
+        image = resize_to_square(image)
     resized_image = cv2.resize(image, (target_size, target_size))
     # 取得邊緣
     region_rect = find_edge(resized_image)
@@ -77,8 +78,26 @@ def stretch_image_region(image1, image2, region_rect1, region_rect2, target_widt
     y1_min, y1_max, x1_min, x1_max = region_rect1
     region_image1 = image1[y1_min-top_diff:y1_max+bot_diff, x1_min-left_diff:x1_max+right_diff]
 
+    # 填成方形
+    region_image1 = resize_to_square(region_image1)
+
     # resize
     image_resize = cv2.resize(region_image1, (target_width, target_height))
 
     return image_resize
 
+
+def resize_to_square(image):
+    size = image.shape
+    h = size[0]
+    w = size[1]
+    if w == h:
+        return image
+    if w > h:
+        pad = (w - h) // 2
+        image = cv2.copyMakeBorder(image, pad, pad, 0, 0, cv2.BORDER_CONSTANT, value=[255, 255, 255])
+        return image
+    else:
+        pad = (h - w) // 2
+        image = cv2.copyMakeBorder(image, 0, 0, pad, pad, cv2.BORDER_CONSTANT, value=[255, 255, 255])
+        return image
