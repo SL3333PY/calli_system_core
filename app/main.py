@@ -5,8 +5,10 @@ import logging
 from app.models import (
     RecognizePostRequest,
     RecognizePostResponse,
+    GeneratePostRequest,
+    GeneratePostResponse,
     EvaluatePostRequest,
-    EvaluatePostResponse
+    EvaluatePostResponse,
 )
 from app.services.comparison import (
     match_images,
@@ -18,6 +20,7 @@ from app.services.image_process import (
     convert_image_to_base64,
     save_image,
 )
+from app.services.generation import generate_calligraphy
 from app.services.evaluation import get_similarity
 from app.services.character_recognition import detect_characters
 
@@ -44,6 +47,16 @@ def recognize(body: RecognizePostRequest) -> RecognizePostResponse:
         logger.error(f"An error occurred: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     return RecognizePostResponse(text=text)
+
+
+@app.post("/generate", response_model=GeneratePostResponse)
+def generate(body: GeneratePostRequest) -> GeneratePostResponse:
+    try:
+        generated_image = generate_calligraphy(body.text, body.calligrapher)
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
+        raise HTTPException(status_code=500, detail="Generation failed")
+    return GeneratePostResponse(generatedImage=convert_image_to_base64(generated_image))
 
 
 @app.post("/evaluate", response_model=EvaluatePostResponse)

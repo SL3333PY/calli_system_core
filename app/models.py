@@ -10,6 +10,15 @@ class RecognizePostResponse(BaseModel):
     text: Optional[str] = None
 
 
+class GeneratePostRequest(BaseModel):
+    text: Optional[str] = None
+    calligrapher: Optional[str] = None
+
+
+class GeneratePostResponse(BaseModel):
+    generatedImage: Optional[str] = None
+
+
 class EvaluatePostRequest(BaseModel):
     imitatedImage: Optional[str] = None
     generatedImage: Optional[str] = None
