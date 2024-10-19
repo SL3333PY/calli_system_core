@@ -72,7 +72,7 @@ def evaluate(body: EvaluatePostRequest) -> EvaluatePostResponse:
             imitated_image, generated_image, region_rect1, region_rect2, target_size, target_size)
 
         overlapped_image = match_images(stretched_imitated_image, generated_image)
-        base64_image = "data:image/png;base64," + convert_image_to_base64(overlapped_image)
+        base64_image = convert_image_to_base64(overlapped_image)
 
         ssim, aHash, dHash, pHash = get_similarity(stretched_imitated_image, generated_image)
     except Exception as e:
